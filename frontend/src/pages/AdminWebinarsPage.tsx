@@ -35,6 +35,13 @@ export const AdminWebinarsPage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
 
+  // In-App Confirmation Modal state (replaces browser confirm dialog)
+  const [confirmModal, setConfirmModal] = useState<{
+    type: 'delete' | 'reject';
+    id: number;
+    title: string;
+  } | null>(null);
+
   // Form fields
   const [formData, setFormData] = useState({
     title: '',
@@ -88,11 +95,29 @@ export const AdminWebinarsPage: React.FC = () => {
     }
   };
 
-  const handleReject = async (id: number) => {
-    if (confirm('Are you sure you want to reject this imported webinar? It will not be visible to students.')) {
-      await api.adminRejectWebinar(id);
-      setActionAlert('Webinar rejected and removed from pending queue.');
+  const handleRejectPrompt = (id: number, title: string) => {
+    setConfirmModal({ type: 'reject', id, title });
+  };
+
+  const handleDeletePrompt = (id: number, title: string) => {
+    setConfirmModal({ type: 'delete', id, title });
+  };
+
+  const executeConfirmedAction = async () => {
+    if (!confirmModal) return;
+    const { type, id, title } = confirmModal;
+    setConfirmModal(null);
+    try {
+      if (type === 'delete') {
+        await api.adminDeleteWebinar(id);
+        setActionAlert(`Webinar "${title}" has been permanently removed.`);
+      } else if (type === 'reject') {
+        await api.adminRejectWebinar(id);
+        setActionAlert(`Webinar "${title}" rejected and removed from pending queue.`);
+      }
       loadData();
+    } catch (e) {
+      console.error('Failed to execute admin action', e);
     }
   };
 
@@ -150,13 +175,6 @@ export const AdminWebinarsPage: React.FC = () => {
       tags: w.tags.join(', '),
     });
     setModalOpen(true);
-  };
-
-  const handleDelete = async (id: number) => {
-    if (confirm('Are you sure you want to remove this webinar record from the database?')) {
-      await api.adminDeleteWebinar(id);
-      loadData();
-    }
   };
 
   const handleSubmitForm = async (e: React.FormEvent) => {
@@ -378,7 +396,7 @@ export const AdminWebinarsPage: React.FC = () => {
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleReject(w.id)}
+                            onClick={() => handleRejectPrompt(w.id, w.title)}
                             className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:text-red-300 font-bold text-[11px] cursor-pointer"
                             title="Reject imported webinar"
                           >
@@ -403,7 +421,7 @@ export const AdminWebinarsPage: React.FC = () => {
                             <Edit className="w-3.5 h-3.5" />
                           </button>
                           <button
-                            onClick={() => handleDelete(w.id)}
+                            onClick={() => handleDeletePrompt(w.id, w.title)}
                             className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
                             title="Delete listing"
                           >
@@ -608,6 +626,60 @@ export const AdminWebinarsPage: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modern In-App Confirmation Modal (Replaces browser confirm popup) */}
+      {confirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-start gap-4">
+              <div
+                className={`p-3 rounded-xl flex-shrink-0 ${
+                  confirmModal.type === 'delete'
+                    ? 'bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400'
+                    : 'bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400'
+                }`}
+              >
+                {confirmModal.type === 'delete' ? (
+                  <Trash2 className="w-6 h-6" />
+                ) : (
+                  <AlertCircle className="w-6 h-6" />
+                )}
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                  {confirmModal.type === 'delete' ? 'Delete Webinar Listing?' : 'Reject Imported Webinar?'}
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  {confirmModal.type === 'delete'
+                    ? `Are you sure you want to permanently remove "${confirmModal.title}" from the database? This action cannot be undone.`
+                    : `Are you sure you want to reject "${confirmModal.title}"? It will not be visible to students in the public catalog.`}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => setConfirmModal(null)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeConfirmedAction}
+                className={`px-4 py-2 text-xs font-bold text-white rounded-xl shadow-sm transition cursor-pointer ${
+                  confirmModal.type === 'delete'
+                    ? 'bg-red-600 hover:bg-red-700'
+                    : 'bg-amber-600 hover:bg-amber-700'
+                }`}
+              >
+                {confirmModal.type === 'delete' ? 'Yes, Delete Record' : 'Yes, Reject Listing'}
+              </button>
+            </div>
           </div>
         </div>
       )}
