@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline | WebinarPH</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .card {
+      max-width: 440px;
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      border-radius: 1rem;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+    p {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border-radius: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1d4ed8; }
+    .footer-note {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📡</div>
+    <h1>You are Currently Offline</h1>
+    <p>
+      WebinarPH requires an active connection to verify upcoming webinar availability, registration deadlines, and certificate validity. Please check your internet connection.
+    </p>
+    <button class="btn" onclick="window.location.reload()">
+      Retry Connection
+    </button>
+    <div class="footer-note">
+      Exclusively verified academic webinars · WebinarPH
+    </div>
+  </div>
+</body>
+</html>

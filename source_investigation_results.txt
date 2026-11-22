@@ -1,0 +1,44 @@
+# Source Investigation Results
+
+## ROC.PH (https://roc.ph/webinars/)
+
+agent('Research the webinar source "ROC.PH" at ...')
+
+---
+
+## AllAI Events (https://allai.events/events/type/webinar)
+
+agent('Research the webinar source "AllAI Event...')
+
+---
+
+## Techstrong Learning (https://techstronglearning.com/)
+
+agent('Research the webinar source "Techstrong ...')
+
+---
+
+## NIST NICE (https://www.nist.gov/itl/applied-cybersecurity/nice/events/webinars)
+
+agent('Research the webinar source "NIST NICE" ...')
+
+---
+
+## KnowBe4 (https://www.knowbe4.com/webinar-library)
+
+agent('Research the webinar source "KnowBe4" at...')
+
+---
+
+## Gartner (https://emt.gartnerweb.com/en/webinars?SessionType=upcoming)
+
+agent('Research the webinar source "Gartner" at...')
+
+---
+
+## ISACA (https://www.isaca.org/training-and-events/online-training/webinars)
+
+agent('Research the webinar source "ISACA" at h...')
+
+---
+

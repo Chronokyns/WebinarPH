@@ -1,0 +1,48 @@
+# Dependencies & Tooling
+node_modules/
+.tools/
+.pnpm-store/
+package-lock.json.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Database & SQLite
+*.db
+*.sqlite
+*.sqlite3
+webinarmatch.db
+
+# Build Artifacts
+frontend/dist/
+frontend/dist-ssr/
+*.tsbuildinfo
+
+# Logs & Temporary Files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment & Credentials
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
